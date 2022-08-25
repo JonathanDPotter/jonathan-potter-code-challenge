@@ -1,13 +1,22 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import './index.css';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
+import { store } from "./store";
+import { debounce } from "debounce";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "./index.scss";
+import { saveState } from "./store/localStorage";
 
-const container = document.getElementById('root')!;
+const container = document.getElementById("root")!;
 const root = createRoot(container);
+
+// saves redux state to localStorage
+store.subscribe(
+  debounce(() => {
+    saveState(store.getState());
+  }, 800)
+);
 
 root.render(
   <React.StrictMode>
